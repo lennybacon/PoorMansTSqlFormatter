@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Poor Man's T-SQL Formatter - a small free Transact-SQL formatting 
-library for .Net 2.0 and JS, written in C#. 
+Poor Man's T-SQL Formatter - a small free Transact-SQL formatting
+library for .Net 2.0 and JS, written in C#.
 Copyright (C) 2017-2019 Tao Klerks
 
 This program is free software: you can redistribute it and/or modify
@@ -18,33 +18,34 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" 
-           Name="Poor Man's T-Sql Formatter SSMS Extension" 
+    <?define NetFx48MinRelease = 528040 ?>
+  <Product Id="*"
+           Name="Poor Man's T-Sql Formatter SSMS Extension"
            Version="!(bind.FileVersion.PoorMansTSqlFormatterSSMSPackagedll)"
-           Manufacturer="Tao Klerks" 
-           UpgradeCode="21d9993c-4f6c-41ba-9b6c-f103e25cc1e7" 
-           Language="1033" 
+           Manufacturer="Tao Klerks"
+           UpgradeCode="21d9993c-4f6c-41ba-9b6c-f103e25cc1e7"
+           Language="1033"
            >
-		<Package 
+    <Package
       Description="Poor Man's T-Sql Formatter SSMS Extension Installer - Version: !(bind.FileVersion.PoorMansTSqlFormatterSSMSPackagedll)"
-      InstallerVersion="200" 
-      Compressed="yes" 
-      InstallScope="perMachine" 
+      InstallerVersion="200"
+      Compressed="yes"
+      InstallScope="perMachine"
       />
 
-		<MajorUpgrade 
-      DowngradeErrorMessage="A newer version of [ProductName] is already installed." 
+    <MajorUpgrade
+      DowngradeErrorMessage="A newer version of [ProductName] is already installed."
       AllowSameVersionUpgrades="yes"
       MigrateFeatures="no"
       />
 
     <MediaTemplate EmbedCab="yes" />
 
-    <Binary Id="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll" 
+    <Binary Id="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll"
             SourceFile="$(var.PoorMansTSqlFormatterSSMSPackage.Setup.action.TargetDir)PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll" />
-    
-    <CustomAction Id='PrepActionData2014' 
-                  Property='SetupPackageFilterAction2014' 
+
+    <CustomAction Id='PrepActionData2014'
+                  Property='SetupPackageFilterAction2014'
                   Value='APPLICATIONFOLDER=[APPLICATIONFOLDER];SSMS2014FILE=[#PkgDefExtensionsHookup2014]'
                   />
 
@@ -63,11 +64,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                   Value='APPLICATIONFOLDER=[APPLICATIONFOLDER];SSMS18FILE=[#PkgDefExtensionsHookup18]'
                   />
 
-    <CustomAction Id="SetupPackageFilterAction2014" 
+    <CustomAction Id='PrepActionData19'
+              Property='SetupPackageFilterAction19'
+              Value='APPLICATIONFOLDER=[APPLICATIONFOLDER];SSMS19FILE=[#PkgDefExtensionsHookup19]'
+              />
+
+    <CustomAction Id='PrepActionData20'
+              Property='SetupPackageFilterAction20'
+              Value='APPLICATIONFOLDER=[APPLICATIONFOLDER];SSMS20FILE=[#PkgDefExtensionsHookup20]'
+              />
+
+    <CustomAction Id="SetupPackageFilterAction2014"
                   Return="check"
                   Execute="deferred"
-                  BinaryKey="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll" 
-                  DllEntry="PkgDefUpdateAction2014" 
+                  BinaryKey="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll"
+                  DllEntry="PkgDefUpdateAction2014"
                   Impersonate="no"
                   />
 
@@ -95,11 +106,29 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
               Impersonate="no"
                   />
 
+    <CustomAction Id="SetupPackageFilterAction19"
+              Return="check"
+              Execute="deferred"
+              BinaryKey="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll"
+              DllEntry="PkgDefUpdateAction19"
+              Impersonate="no"
+                  />
+
+    <CustomAction Id="SetupPackageFilterAction20"
+              Return="check"
+              Execute="deferred"
+              BinaryKey="PoorMansTSqlFormatterSSMSPackage.Setup.action.CA.dll"
+              DllEntry="PkgDefUpdateAction20"
+              Impersonate="no"
+                  />
+
     <InstallExecuteSequence>
       <Custom Action="PrepActionData2014" Before="InstallInitialize" />
       <Custom Action="PrepActionData2016" Before="InstallInitialize" />
       <Custom Action="PrepActionData17" Before="InstallInitialize" />
       <Custom Action="PrepActionData18" Before="InstallInitialize" />
+      <Custom Action="PrepActionData19" Before="InstallInitialize" />
+      <Custom Action="PrepActionData20" Before="InstallInitialize" />
       <Custom Action="SetupPackageFilterAction2014" Before="InstallFinalize">
         <![CDATA[&SSMS2014Feature=3]]>
       </Custom>
@@ -112,21 +141,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       <Custom Action="SetupPackageFilterAction18" Before="InstallFinalize">
         <![CDATA[&SSMS18Feature=3]]>
       </Custom>
+      <Custom Action="SetupPackageFilterAction19" Before="InstallFinalize">
+        <![CDATA[&SSMS19Feature=3]]>
+      </Custom>
+      <Custom Action="SetupPackageFilterAction20" Before="InstallFinalize">
+        <![CDATA[&SSMS20Feature=3]]>
+      </Custom>
     </InstallExecuteSequence>
-    
-    <Feature 
-      Id="MainFeature" 
-      Title="Poor Man's T-SQL Formatter SSMS Extension - main Package" 
+
+    <Feature
+      Id="MainFeature"
+      Title="Poor Man's T-SQL Formatter SSMS Extension - main Package"
       Level="1"
       ConfigurableDirectory='APPLICATIONFOLDER'
       AllowAdvertise='no'
       InstallDefault='local'
       Absent='disallow'
       >
-			<ComponentGroupRef Id="MainProductComponents" />
+      <ComponentGroupRef Id="MainProductComponents" />
       <Feature
         Id="SSMS2014Feature"
-        Title="SSMS 2014 integration" 
+        Title="SSMS 2014 integration"
         Level="1"
         AllowAdvertise='no'
         InstallDefault='local'
@@ -134,7 +169,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <Condition Level='0'>
           <![CDATA[NOT SSMS2014EXTENSIONSFOLDER]]>
         </Condition>
-   			<ComponentGroupRef Id="SSMS2014ComponentGroup" />
+        <ComponentGroupRef Id="SSMS2014ComponentGroup" />
       </Feature>
       <!-- Level 1 means "install by default". We're overriding that default level of the feature based on the Condition, and 0 has special meaning "remove option". -->
       <Feature
@@ -173,6 +208,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </Condition>
         <ComponentGroupRef Id="SSMS18ComponentGroup" />
       </Feature>
+      <Feature
+        Id="SSMS19Feature"
+        Title="SSMS 19 integration"
+        Level="1"
+        AllowAdvertise='no'
+        InstallDefault='local'
+        >
+        <Condition Level='0'>
+          <![CDATA[NOT SSMS19EXTENSIONSFOLDER]]>
+        </Condition>
+        <ComponentGroupRef Id="SSMS19ComponentGroup" />
+      </Feature>
+      <Feature
+        Id="SSMS20Feature"
+        Title="SSMS 20 integration"
+        Level="1"
+        AllowAdvertise='no'
+        InstallDefault='local'
+        >
+        <Condition Level='0'>
+          <![CDATA[NOT SSMS20EXTENSIONSFOLDER]]>
+        </Condition>
+        <ComponentGroupRef Id="SSMS20ComponentGroup" />
+      </Feature>
     </Feature>
 
     <!-- for the "WixUI_Advanced" UI -->
@@ -193,16 +252,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
     <!-- populated automatically by the "WixNetFxExtension" DLL reference -->
-    <!-- PLEASE NOTE: I'm not entirely convinced that 2.0 really should be required - but it's always there for me so I haven't been able to check yet. -->
-    <PropertyRef Id="NETFRAMEWORK20"/>
-    <PropertyRef Id="NETFRAMEWORK45"/>
-    
-    <Condition Message='This setup requires the .NET Framework 2.0 installed.'>
-      <![CDATA[Installed OR NETFRAMEWORK20]]>
-    </Condition>
 
-    <Condition Message='This setup requires the .NET Framework 4.5 installed.'>
-      <![CDATA[Installed OR NETFRAMEWORK45]]>
+    <PropertyRef Id="WIXNETFX4RELEASEINSTALLED" />
+    <Condition Message="This application requires .NET Framework 4.8 Please install the .NET Framework then run this installer again.">
+      <![CDATA[WIXNETFX4RELEASEINSTALLED >= "#$(var.NetFx48MinRelease)"]]>
     </Condition>
 
     <Property Id="SSMS2014EXTENSIONSFOLDER">
@@ -217,34 +270,42 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <Property Id="SSMS18EXTENSIONSFOLDER">
       <RegistrySearch Id='SSMS18ExtensionsFolderRegistrySearch' Type='raw' Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\18.0_IsoShell_Config\Initialization' Name='ApplicationExtensionsFolder' />
     </Property>
+    <Property Id="SSMS19EXTENSIONSFOLDER">
+      <RegistrySearch Id='SSMS19ExtensionsFolderRegistrySearch' Type='raw' Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\19.0_IsoShell_Config\Initialization' Name='ApplicationExtensionsFolder' />
+    </Property>
+    <Property Id="SSMS20EXTENSIONSFOLDER">
+      <RegistrySearch Id='SSMS20ExtensionsFolderRegistrySearch' Type='raw' Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\20.0_IsoShell_Config\Initialization' Name='ApplicationExtensionsFolder' />
+    </Property>
 
     <Condition Message='This setup requires SSMS 2014, 2016, 17 or 18 installed.'>
-      <![CDATA[Installed OR SSMS2014EXTENSIONSFOLDER OR SSMS2016EXTENSIONSFOLDER OR SSMS17EXTENSIONSFOLDER OR SSMS18EXTENSIONSFOLDER]]>
+      <![CDATA[Installed OR SSMS2014EXTENSIONSFOLDER OR SSMS2016EXTENSIONSFOLDER OR SSMS17EXTENSIONSFOLDER OR SSMS18EXTENSIONSFOLDER OR SSMS19EXTENSIONSFOLDER OR SSMS20EXTENSIONSFOLDER]]>
     </Condition>
-  
+
   </Product>
 
-	<Fragment>
+  <Fragment>
     <!-- frankly I still don't understand this container at all. -->
-		<Directory Id="TARGETDIR" Name="SourceDir">
+    <Directory Id="TARGETDIR" Name="SourceDir">
       <!-- Also don't understand what this gets populated by, and how it decides to use x86 folder on 64-bit machines -->
-			<Directory Id="ProgramFilesFolder">
+      <Directory Id="ProgramFilesFolder">
         <Directory Id="APPLICATIONFOLDER" Name="PoorMansTSqlFormatterSSMSExtension">
           <Directory Id="FRResourcesFolder" Name="fr" />
           <Directory Id="ESResourcesFolder" Name="es" />
         </Directory>
       </Directory>
-      <!-- These directories get the value populated by the registry search above, if the registry value is found; 
+      <!-- These directories get the value populated by the registry search above, if the registry value is found;
            otherwise they default to this "Name" in C:\, but are never used. -->
       <Directory Id="SSMS2014EXTENSIONSFOLDER" Name="2014DefaultFolder" />
       <Directory Id="SSMS2016EXTENSIONSFOLDER" Name="2016DefaultFolder" />
       <Directory Id="SSMS17EXTENSIONSFOLDER" Name="17DefaultFolder" />
       <Directory Id="SSMS18EXTENSIONSFOLDER" Name="18DefaultFolder" />
+      <Directory Id="SSMS19EXTENSIONSFOLDER" Name="19DefaultFolder" />
+      <Directory Id="SSMS20EXTENSIONSFOLDER" Name="20DefaultFolder" />
     </Directory>
   </Fragment>
 
-	<Fragment>
-		<ComponentGroup Id="MainProductComponents">
+  <Fragment>
+    <ComponentGroup Id="MainProductComponents">
       <Component Id="MainFiles" Directory="APPLICATIONFOLDER" Guid="5dd7dd2f-b4a3-459b-938c-1ca3d52a6685">
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSPackage.dll" Id="PoorMansTSqlFormatterSSMSPackagedll" KeyPath="yes" />
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSPackage.pkgdef" Id="PoorMansTSqlFormatterSSMSPackagepkgdef" /> <!-- Autogen ID would be same as DLL -->
@@ -264,7 +325,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)es\PoorMansTSqlFormatterSSMSLib.resources.dll" Id="SSMSLibSharedResourcesES" />
       </Component>
     </ComponentGroup>
-		<ComponentGroup Id="SSMS2014ComponentGroup">
+    <ComponentGroup Id="SSMS2014ComponentGroup">
       <Component Id='SSMS2014StartupFlag' Directory='APPLICATIONFOLDER' Guid='2c8e4308-db46-4bb6-8bbd-82322a3bf4bb'>
         <RegistryKey Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\12.0\Packages\{247609B1-2692-47D6-972A-976544685F0E}'>
           <RegistryValue Type='integer' Name='SkipLoading' Value='1'/>
@@ -304,5 +365,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSPackage.pkgdef" Id="PkgDefExtensionsHookup18" KeyPath="yes" />
       </Component>
     </ComponentGroup>
-  </Fragment>  
+    <ComponentGroup Id="SSMS19ComponentGroup">
+      <Component Id='SSMS19StartupFlag' Directory='APPLICATIONFOLDER' Guid='1ED93384-9A11-4365-8E78-1FA87240926F'>
+        <RegistryKey Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\15.0\Packages\{247609B1-2692-47D6-972A-976544685F0E}'>
+          <RegistryValue Type='integer' Name='SkipLoading' Value='1'/>
+        </RegistryKey>
+      </Component>
+      <Component Id="SSMS19PackageDefFile" Directory="SSMS19EXTENSIONSFOLDER" Guid='32F4C3F6-968A-4367-A434-ACD121058BF3'>
+        <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSPackage.pkgdef" Id="PkgDefExtensionsHookup19" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+    <ComponentGroup Id="SSMS20ComponentGroup">
+      <Component Id='SSMS20StartupFlag' Directory='APPLICATIONFOLDER' Guid='CE37C9DD-C346-4C21-B9F3-AF50F33052D7'>
+        <RegistryKey Root='HKCU' Key='Software\Microsoft\SQL Server Management Studio\15.0\Packages\{247609B1-2692-47D6-972A-976544685F0E}'>
+          <RegistryValue Type='integer' Name='SkipLoading' Value='1'/>
+        </RegistryKey>
+      </Component>
+      <Component Id="SSMS20PackageDefFile" Directory="SSMS20EXTENSIONSFOLDER" Guid='F222D694-2619-4E30-8790-0D94CEFE1AA9'>
+        <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSPackage.pkgdef" Id="PkgDefExtensionsHookup20" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
 </Wix>
