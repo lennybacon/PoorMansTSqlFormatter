@@ -41,7 +41,7 @@ namespace PoorMansTSqlFormatterDemo.FrameworkClassReplacements
 
         protected override ResourceSet InternalGetResourceSet(CultureInfo culture, bool createIfNotExists, bool tryParents)
         {
-            ResourceSet rs = (ResourceSet)this.ResourceSets[culture];
+            ResourceSet rs = (ResourceSet)this.InternalGetResourceSet(culture, false, true);
             if (rs == null)
             {
                 Stream store = null;

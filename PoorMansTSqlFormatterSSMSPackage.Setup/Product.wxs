@@ -312,7 +312,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterSSMSLib.dll" />
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterPluginShared.dll" />
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)PoorMansTSqlFormatterLib.dll" />
-        <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)LinqBridge.dll" />
+        <!--<File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)LinqBridge.dll" />-->
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)LICENSE.rtf" />
         <File Source="$(var.PoorMansTSqlFormatterSSMSPackage.TargetDir)extension.vsixmanifest" />
       </Component>

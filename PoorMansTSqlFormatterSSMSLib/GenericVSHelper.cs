@@ -47,7 +47,7 @@ namespace PoorMansTSqlFormatterSSMSLib
         public Properties.Settings Settings { get { return Properties.Settings.Default; } }
 
         public GenericVSHelper(bool isVisualStudio, GetTextEditorKeyBindingScopeName keyBindingScopeNameDelegate, GetKeyBinding getKeyBindingDelegate, SetKeyBinding setKeyBindingDelegate)
-		{
+    {
             _isVisualStudio = isVisualStudio;
             _getKeyBindingScopeNameDelegate = keyBindingScopeNameDelegate;
             _getKeyBindingDelegate = getKeyBindingDelegate;
